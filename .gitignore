@@ -3,3 +3,4 @@
 *.json
 *.sqlite3
 *.venv/
+my_env.sh
