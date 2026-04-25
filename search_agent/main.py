@@ -1,24 +1,56 @@
-import vertexai
-from vertexai.generative_models import GenerativeModel, Content, Part
-from decouple import config
+import asyncio
+from google.adk import Agent, Runner
+from google.adk.sessions import InMemorySessionService
+from google.genai import types
 
-# Inicialização padrão
-vertexai.init(
-    project=config("GOOGLE_CLOUD_PROJECT"),
-    location="us-central1"
+# -- Definindo o agente -- #
+agent = Agent(
+    name="search",
+    model="gemini-2.5-flash",
+    instruction="Responda as perguntas"
 )
 
-# Criando o modelo com instruções de sistema (o seu "agente")
-model = GenerativeModel(
-    model_name="gemini-2.5-flash",
-    system_instruction="Você é um assistente especializado em ChromaDB."
-)
+# -- Iniciando a Sessão --#
+session_service = InMemorySessionService()
 
-# FAZENDO A PERGUNTA DE FORMA SIMPLES
-def perguntar(texto):
-    # Sem dicionários complexos, sem None, sem segredos.
-    response = model.generate_content(texto)
-    return response.text
+# -- Definindo a sessão --#
+async def setup_session():
+    session_id = "session-123"
+    user_id = "me"
+    app_name = "search"
 
-print(perguntar("Olá! Como integro o Gemini com o ChromaDB?"))
+    #aqui é importante ser assíncrono
+    await session_service.create_session(
+        app_name=app_name,
+        user_id=user_id,
+        session_id=session_id,
+    )
+    return session_id, user_id, app_name
 
+# --Definindo o Runner(como o agente será chamado) --#
+async def call_agent(query: str, session_id: str, user_id: str, app_name: str):
+    content = types.Content(
+        role="user",
+        parts=[types.Part(text=query)]
+    )
+    runner = Runner(
+        agent=agent,
+        app_name=app_name,
+        session_service=session_service
+    )
+
+    async for event in runner.run_async(
+        user_id=user_id,
+        session_id=session_id,
+        new_message=content
+    ):
+        if event.is_final_response():
+            print("Resposta:", event.content.parts[0].text)
+
+# --Initialize party-- #
+async def main():
+    session_id, user_id, app_name = await setup_session()
+    await call_agent("Explique o que é Python.", session_id, user_id, app_name)
+
+if __name__ == "__main__":
+    asyncio.run(main())
