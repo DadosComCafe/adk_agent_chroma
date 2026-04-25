@@ -1,0 +1,11 @@
+[project]
+name = "adk-agent-chroma"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "google-genai>=1.73.1",
+    "python-decouple>=3.8",
+    "streamlit>=1.56.0",
+]
