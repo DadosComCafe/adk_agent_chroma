@@ -11,7 +11,7 @@ Um repositório que busca estudar a utilização de um banco de dados vetorial, 
 
 ## Como usar este repositório
 
-### 1 Clone o repositório:
+### 1. Clone o repositório:
 __1.0 Com um terminal aberto, rode o seguinte comando para clonar o repositório:__
 
     git clone https://github.com/DadosComCafe/adk_agent_chroma
@@ -20,11 +20,15 @@ __1.1 Navegue até a raíz do projeto:__
 
     cd adk_agent_chroma
 
-### 2 Configure seu ambiente:
+### 2. Configure seu ambiente:
 __2.0 Para este projeto, usaremos o gerenciador de dependências python uv. Portanto, na raiz do projeto execute:__
 
     uv sync
 
 Com isso, um diretório chamado .venv será criado na raiz do projeto. Este diretório contem o ambiente python isolado.
 
+### 3. Configure a variável de ambiente:
 
+### 4. Rode o servidor que irá levantar o agente:
+
+    uv run streamlit run server.py
