@@ -17,8 +17,13 @@ services:
     image: meu-jupyter-notebook
     container_name: Notebook
     build: .
+    user: root
     ports:
       - "8888:8888"
     volumes:
       - ./notebooks:/home/jovyan/work
+    environment:
+      - CHOWN_HOME=yes
+      - CHOWN_EXTRA=/home/jovyan/work
+      - CHOWN_EXTRA_OPTS=-R
     restart: unless-stopped
