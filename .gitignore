@@ -4,5 +4,4 @@
 *.sqlite3
 *.venv/
 my_env.sh
-*chroma_data/
-*notebooks/
+*.ipynb_checkpoints/
