@@ -1,7 +1,7 @@
 FROM jupyter/base-notebook:latest
 
 USER root
-RUN pip install --no-cache-dir chromadb
+RUN pip install --no-cache-dir chromadb && pip install --no-cache-dir python-decouple && pip install --no-cache-dir google-adk
 
 USER ${NB_UID}
 RUN jupyter notebook --generate-config --allow-root
