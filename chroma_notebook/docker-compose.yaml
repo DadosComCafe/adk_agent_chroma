@@ -14,9 +14,10 @@ services:
 
   #--Jupyter Notebook --#
   ipython-notebook:
-    image: meu-jupyter-notebook
-    container_name: Notebook
-    build: .
+    container_name: MeuNotebook
+    build:
+      context: .
+      dockerfile: Dockerfile
     user: root
     ports:
       - "8888:8888"
@@ -26,4 +27,6 @@ services:
       - CHOWN_HOME=yes
       - CHOWN_EXTRA=/home/jovyan/work
       - CHOWN_EXTRA_OPTS=-R
+    env_file:
+      - .env
     restart: unless-stopped
